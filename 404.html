@@ -7,7 +7,7 @@
 <body>
     <script>
         query = window.location.href.split('?')[1];
-        url = "https://www.centiment.co/404?redirect=assets.centiment.co%2f404";
+        url = "https://www.centiment.co/404?redirectDomain=assets.centiment.co&redirectPath=404";
         if (typeof query != "undefined") url += '&' + query;
         window.location.replace(url);
     </script>
