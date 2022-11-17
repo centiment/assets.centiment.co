@@ -2,7 +2,7 @@
 /**
  * Author: Moin Khan
  * Dated: 29 Sep 2020
- * Lastest Deploy: 22 March 2021
+ * Latest Deploy: 18 Nov 2022
  */
 
 
@@ -53,12 +53,11 @@ function trackingValue(cookieValue = '', queryString = location.search.slice(1))
             var value = decodeURIComponent(pair[1] || '');
 
             if (!reservedKeys.includes(key)
-                && (Object.keys(trackerValue).length <= 15 || trackerValue.hasOwnProperty(key) || key.includes("utm_"))) {
+                && (Object.keys(trackerValue).length <= 15 || trackerValue.hasOwnProperty(key) || key.includes("utm_") || key.includes("gclid"))) {
                 trackerValue[key] = value
             }
         });
     }
-
 
     //Append centiment current URL
     if (currentURL) {
