@@ -13,7 +13,7 @@
  *
  * @returns {string}
  */
- function getCookie(cookieName) {
+function getCookie(cookieName) {
     var result = document.cookie.match('(^|;)\\s*' + cookieName + '\\s*=\\s*([^;]+)')
     return result ? result.pop() : ''
 }
@@ -112,8 +112,8 @@ function trackingValue(cookieValue = '', queryString = location.search.slice(1))
  *
  * @returns {none}
  */
-function setTrackingCookie(value, cookie_name = 'CentimentTracker') {
-    var cookie = cookie_name + '=' + value + '; path=/; domain=.centiment.co'
+function setTrackingCookie(value, domain = 'centiment.co', cookie_name = 'CentimentTracker') {
+    var cookie = cookie_name + '=' + value + '; path=/; domain=.' + domain
     var now = new Date()
     now.setTime(now.getTime() + 30 * 24 * 60 * 60 * 1000)
     cookie += '; expires=' + now.toUTCString()
@@ -126,7 +126,7 @@ var time = date.getTime();
 
 var reservedKeys = ["flow-tracker", "centiment-referrer", "firstPage"];
 
-var centimentDomains = ["www.centiment.co", "centiment.co", "quote.centiment.co", "temp.centiment.co", "app.centiment.co", "assets.centiment.co"]
+var centimentDomains = ["www.centiment.co", "centiment.co", "quote.centiment.co", "temp.centiment.co", "app.centiment.co", "assets.centiment.co", "centiment-fs.webflow.io"]
 
 var currentURL = window.location.href;
 
@@ -138,4 +138,5 @@ if (referrerURL) {
     referrerDomain = referrerURL.match(/:\/\/(.[^/]+)/)[1];
 }
 
-setTrackingCookie(trackingValue(getCookie('CentimentTracker')))
+setTrackingCookie(trackingValue(getCookie('CentimentTracker')), "centiment.co")
+setTrackingCookie(trackingValue(getCookie('CentimentTracker')), "centiment-fs.webflow.io")
