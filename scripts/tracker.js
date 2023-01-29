@@ -67,7 +67,7 @@ function trackingValue(cookieValue = '', queryString = location.search.slice(1))
             trackerValue['flow-tracker'] = []
         }
 
-        while (Object.keys(trackerValue['flow-tracker']).length > 19) {
+        while (Object.keys(trackerValue['flow-tracker']).length > 9) {
             trackerValue['flow-tracker'].shift()
         }
 
@@ -86,7 +86,7 @@ function trackingValue(cookieValue = '', queryString = location.search.slice(1))
             trackerValue['centiment-referrer'] = []
         }
 
-        while (Object.keys(trackerValue['centiment-referrer']).length > 9) {
+        while (Object.keys(trackerValue['centiment-referrer']).length > 5) {
             trackerValue['centiment-referrer'].shift()
         }
 
