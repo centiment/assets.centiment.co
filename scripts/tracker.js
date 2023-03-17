@@ -126,7 +126,7 @@ var time = date.getTime();
 
 var reservedKeys = ["flow-tracker", "centiment-referrer", "firstPage"];
 
-var centimentDomains = ["www.centiment.co", "centiment.co", "quote.centiment.co", "temp.centiment.co", "app.centiment.co", "assets.centiment.co", "centiment-fs.webflow.io"]
+var centimentDomains = ["www.centiment.co", "centiment.co", "quote.centiment.co", "try.centiment.co", "app.centiment.co", "assets.centiment.co", "centiment-fs.webflow.io"]
 
 var currentURL = window.location.href;
 
