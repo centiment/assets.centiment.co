@@ -244,9 +244,10 @@ const functions = [
 
         d.on("change", z);
         y([a, b, c]);
-        f.on("click", function () {
+        f.on("click", function (e) {
             if (d.is(":checked")) {
-                reset([a, b, c, d])
+                e.preventDefault()
+                // reset([a, b, c, d])
                 window.location.href = "https://surveyhoney.com/?referrer=audience-pannel-accomplish&utm_campaign=cta-respondent&utm_medium=ap-lp2&utm_source=respondent-traffic";
             };
         });
