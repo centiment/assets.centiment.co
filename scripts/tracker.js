@@ -44,6 +44,9 @@ function trackingValue(cookieValue = '', queryString = location.search.slice(1))
         trackerValue['firstPage'] = [encodeURIComponent(currentURL), time]
     }
 
+    //Append Device type
+    trackerValue['deviceType'] = [detectDeviceType(), time]
+
     //Append query string
     if (queryString) {
         var pairs = queryString.split('&')
@@ -102,7 +105,6 @@ function trackingValue(cookieValue = '', queryString = location.search.slice(1))
 
 
 
-
 /**
  * Set Cookie for 30 days
  *
@@ -119,7 +121,6 @@ function setTrackingCookie(value, domain = 'centiment.co', cookie_name = 'Centim
     cookie += '; expires=' + now.toUTCString()
     document.cookie = cookie
 }
-
 
 var date = new Date();
 var time = date.getTime();
@@ -140,3 +141,20 @@ if (referrerURL) {
 
 setTrackingCookie(trackingValue(getCookie('CentimentTracker')), "centiment.co")
 setTrackingCookie(trackingValue(getCookie('CentimentTracker')), "centiment-fs.webflow.io")
+
+
+/**
+ * Get device type
+ *
+ * @returns {string} Device type
+ */
+function detectDeviceType() {
+    const userAgent = navigator.userAgent;
+    if (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent)) {
+        return 'Mobile';
+    } else if (/ipad/i.test(userAgent)) {
+        return 'Tablet';
+    } else {
+        return 'Desktop';
+    }
+}
