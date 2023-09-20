@@ -2,7 +2,7 @@
 /**
  * Author: Moin Khan
  * Dated: 29 Sep 2020
- * Latest Deploy: 18 Nov 2022
+ * Latest Deploy: 20 Sep 2023
  */
 
 
@@ -29,7 +29,7 @@ function getCookie(cookieName) {
  * @returns {string}
  */
 function trackingValue(cookieValue = '', queryString = location.search.slice(1)) {
-    console.log('Cookie', cookieValue)
+
     if (cookieValue) {
         trackerValue = JSON.parse(cookieValue)
     }
