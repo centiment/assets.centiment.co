@@ -29,7 +29,7 @@ function getCookie(cookieName) {
  * @returns {string}
  */
 function trackingValue(cookieValue = '', queryString = location.search.slice(1)) {
-
+    console.log(cookieValue)
     if (cookieValue) {
         trackerValue = JSON.parse(cookieValue)
     }
@@ -109,7 +109,7 @@ function trackingValue(cookieValue = '', queryString = location.search.slice(1))
  * Set Cookie for 30 days
  *
  * @param {string} value Cookie value to be set
- *
+ * @param {string} domain Domain to set cookie on
  * @param {string} cookie_name Cookie name to be set. Default: CentimentTracker
  *
  * @returns {none}
