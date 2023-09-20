@@ -45,7 +45,7 @@ function trackingValue(cookieValue = '', queryString = location.search.slice(1))
     }
 
     //Append Device type
-    trackerValue['deviceType'] = [detectDeviceType(), time]
+    trackerValue['deviceType'] = detectDeviceType()
 
     //Append query string
     if (queryString) {
