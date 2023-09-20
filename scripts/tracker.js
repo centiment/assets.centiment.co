@@ -29,7 +29,7 @@ function getCookie(cookieName) {
  * @returns {string}
  */
 function trackingValue(cookieValue = '', queryString = location.search.slice(1)) {
-    console.log(cookieValue)
+    console.log('Cookie', cookieValue)
     if (cookieValue) {
         trackerValue = JSON.parse(cookieValue)
     }
