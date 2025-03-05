@@ -149,10 +149,16 @@ setTrackingCookie(trackingValue(getCookie('CentimentTracker')), "centiment-fs.we
  * @returns {string} Device type
  */
 function detectDeviceType() {
-    const userAgent = navigator.userAgent;
-    if (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent)) {
+    if (navigator.userAgentData) {
+        return navigator.userAgentData.getHighEntropyValues(["mobile"]).then(data => {
+            return data.mobile ? "Mobile" : "Desktop";
+        });
+    }
+
+    const userAgent = navigator.userAgent.toLowerCase();
+    if (/android|webos|iphone|ipod|blackberry|iemobile|opera mini/.test(userAgent)) {
         return 'Mobile';
-    } else if (/ipad/i.test(userAgent)) {
+    } else if (/ipad|tablet/.test(userAgent) || (window.innerWidth > 768 && window.innerWidth <= 1024)) {
         return 'Tablet';
     } else {
         return 'Desktop';
