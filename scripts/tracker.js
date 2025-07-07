@@ -106,7 +106,7 @@ function trackingValue(cookieValue = '', queryString = location.search.slice(1))
 
 
 /**
- * Set Cookie for 30 days
+ * Set Cookie for 4 hours
  *
  * @param {string} value Cookie value to be set
  * @param {string} domain Domain to set cookie on
@@ -117,7 +117,7 @@ function trackingValue(cookieValue = '', queryString = location.search.slice(1))
 function setTrackingCookie(value, domain = 'centiment.co', cookie_name = 'CentimentTracker') {
     var cookie = cookie_name + '=' + value + '; path=/; domain=.' + domain
     var now = new Date()
-    now.setTime(now.getTime() + 30 * 24 * 60 * 60 * 1000)
+    now.setTime(now.getTime() + 1 * 4 * 60 * 60 * 1000)
     cookie += '; expires=' + now.toUTCString()
     document.cookie = cookie
 }
