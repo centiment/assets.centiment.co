@@ -1,0 +1,46 @@
+/**
+ * Centiment
+ *
+ * @author    Filip Rurak
+ * @copyright Centiment LLC.
+ * @link      https://centiment.co
+ */
+
+#recurring-interval-switch.--yearly .switch---handler---circle {
+    animation: toggle-in 0.2s ease-in-out both;
+}
+
+#recurring-interval-switch.--monthly .switch---handler---circle {
+    animation: toggle-back 0.2s ease-in-out both;
+}
+
+@keyframes toggle-in {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(24px);
+    }
+}
+
+@keyframes toggle-back {
+    0% {
+        transform: translateX(24px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+#professional-card.--disabled .pricingcard_top {
+    opacity: 0.3;
+}
+
+#professional-card.--disabled .pricingcard_list {
+    opacity: 0.3;
+}
+
+#professional-card.--disabled .button {
+    background-color: #C7CBF9;
+    pointer-events: none;
+}
