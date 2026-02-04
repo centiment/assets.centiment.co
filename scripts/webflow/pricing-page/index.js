@@ -13,11 +13,6 @@ const Enums = {
     },
 };
 
-const IntervalsText = {
-    [Enums.RecurringInterval.Monthly]: "/ month",
-    [Enums.RecurringInterval.Yearly]: "/ year",
-}
-
 const Prices = {
     Professional: {
         [Enums.RecurringInterval.Monthly]: {
@@ -60,15 +55,11 @@ const Helper = {
 const runInterfaceUpdates = () => {
     const _runProfessionalPlanCardUpdates = () => {
         const priceValueElement = document.getElementById("professional-price-value");
-        const priceIntervalElement = document.getElementById("professional-price-interval");
 
         // 1. Update price value — e.g. "$1,200"
         if (Prices.Professional[State.recurringInterval][State.interactions]) {
             priceValueElement.innerText = Helper.formatPrice(Prices.Professional[State.recurringInterval][State.interactions]);
         }
-
-        // 1. Update recurring interval — e.g. "billing monthly"
-        priceIntervalElement.innerText = IntervalsText[State.recurringInterval];
 
         const cardElement = document.getElementById("professional-card");
         const cardInteractionsElement = document.getElementById("professional-card-interactions");
