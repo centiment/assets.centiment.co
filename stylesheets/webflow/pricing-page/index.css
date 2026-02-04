@@ -40,6 +40,19 @@
     opacity: 0.3;
 }
 
+#professional-card.--disabled .pricingcard_price {
+    opacity: 0.3;
+}
+
+#professional-card.--disabled .pricingcard_tag {
+    opacity: 0.3;
+}
+
+#professional-card.--disabled .subscribe-button {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
 #professional-card.--disabled .button {
     background-color: #C7CBF9;
     pointer-events: none;

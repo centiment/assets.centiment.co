@@ -13,6 +13,11 @@ const Enums = {
     },
 };
 
+const IntervalsText = {
+    [Enums.RecurringInterval.Monthly]: "/ month",
+    [Enums.RecurringInterval.Yearly]: "/ year",
+}
+
 const Prices = {
     Professional: {
         [Enums.RecurringInterval.Monthly]: {
@@ -63,7 +68,7 @@ const runInterfaceUpdates = () => {
         }
 
         // 1. Update recurring interval — e.g. "billing monthly"
-        priceIntervalElement.innerText = State.recurringInterval;
+        priceIntervalElement.innerText = IntervalsText[State.recurringInterval];
 
         const cardElement = document.getElementById("professional-card");
         const cardInteractionsElement = document.getElementById("professional-card-interactions");
@@ -74,7 +79,7 @@ const runInterfaceUpdates = () => {
         // 3. Toggle disabled class on plan card
         if (Helper.getProfessionalPlanInteractionsList().includes(State.interactions)) {
             cardInteractionsElement.innerText = `${Helper.formatReadable(State.interactions)} interactions`;
-            cardButtonLabelElement.innerText = "Get Professional";
+            cardButtonLabelElement.innerText = "Get started free";
             cardElement.classList.remove("--disabled");
         } else {
             cardButtonLabelElement.innerText = "Not applicable";
