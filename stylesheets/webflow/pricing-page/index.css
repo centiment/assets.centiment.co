@@ -7,11 +7,11 @@
  */
 
 #recurring-interval-switch.--yearly .switch---handler---circle {
-    animation: toggle-in 0.2s ease-in-out both;
+    animation: toggle-back 0.2s ease-in-out both;
 }
 
 #recurring-interval-switch.--monthly .switch---handler---circle {
-    animation: toggle-back 0.2s ease-in-out both;
+    animation: toggle-in 0.2s ease-in-out both;
 }
 
 @keyframes toggle-in {
@@ -19,13 +19,13 @@
         transform: translateX(0);
     }
     100% {
-        transform: translateX(24px);
+        transform: translateX(-24px);
     }
 }
 
 @keyframes toggle-back {
     0% {
-        transform: translateX(24px);
+        transform: translateX(-24px);
     }
     100% {
         transform: translateX(0);

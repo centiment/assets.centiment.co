@@ -42,7 +42,7 @@ const Prices = {
 };
 
 let State = {
-    recurringInterval: Enums.RecurringInterval.Monthly,
+    recurringInterval: Enums.RecurringInterval.Yearly,
     interactions: 0,
     sliderValue: 0,
     sliderMax: 7,
