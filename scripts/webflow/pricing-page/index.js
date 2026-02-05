@@ -6,6 +6,11 @@
  * @link      https://centiment.co
  */
 
+// External scripts' variables
+// ————————————————————————————————————————
+const isLoggedIn = true;
+// ————————————————————————————————————————
+
 const Enums = {
     RecurringInterval: {
         Monthly: "monthly",
@@ -70,7 +75,7 @@ const runInterfaceUpdates = () => {
         // 3. Toggle disabled class on plan card
         if (Helper.getProfessionalPlanInteractionsList().includes(State.interactions)) {
             cardInteractionsElement.innerText = `${Helper.formatReadable(State.interactions)} interactions`;
-            cardButtonLabelElement.innerText = "Get started free";
+            cardButtonLabelElement.innerText = isLoggedIn ? "Get Professional" : "Get started free";
             cardElement.classList.remove("--disabled");
         } else {
             cardButtonLabelElement.innerText = "Not applicable";
