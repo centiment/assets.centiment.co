@@ -57,3 +57,8 @@
     background-color: #C7CBF9;
     pointer-events: none;
 }
+
+#professional-plan-column.--disabled .button {
+    background-color: #C7CBF9;
+    pointer-events: none;
+}

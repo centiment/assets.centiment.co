@@ -66,20 +66,29 @@ const runInterfaceUpdates = () => {
             priceValueElement.innerText = Helper.formatPrice(Prices.Professional[State.recurringInterval][State.interactions]);
         }
 
+        const columnElement = document.getElementById("professional-plan-column");
         const cardElement = document.getElementById("professional-card");
         const cardInteractionsElement = document.getElementById("professional-card-interactions");
-        const cardButtonLabelElement = document.getElementById("professional-card-button-label");
+        const cardButtonLabel1Element = document.getElementById("professional-card-button-label-1");
+        const cardButtonLabel2Element = document.getElementById("professional-card-button-label-2");
 
         // 1. Update interactions bullet point — e.g. "12,000 interactions"
         // 2. Update button label
         // 3. Toggle disabled class on plan card
         if (Helper.getProfessionalPlanInteractionsList().includes(State.interactions)) {
             cardInteractionsElement.innerText = `${Helper.formatReadable(State.interactions)} interactions`;
-            cardButtonLabelElement.innerText = isLoggedIn ? "Get Professional" : "Get started free";
+
+            cardButtonLabel1Element.innerText = isLoggedIn ? "Get Professional" : "Get started free";
+            cardButtonLabel2Element.innerText = isLoggedIn ? "Get Professional" : "Get started free";
+
             cardElement.classList.remove("--disabled");
+            columnElement.classList.remove("--disabled");
         } else {
-            cardButtonLabelElement.innerText = "Not applicable";
+            cardButtonLabel1Element.innerText = "Not applicable";
+            cardButtonLabel2Element.innerText = "Not applicable";
+
             cardElement.classList.add("--disabled");
+            columnElement.classList.add("--disabled");
         }
     };
 
