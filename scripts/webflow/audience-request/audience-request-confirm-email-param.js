@@ -6,16 +6,42 @@
  * @link      https://centiment.co
  */
 
+/**
+ * /forms/audience-request
+ */
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("wf-form-Audience-Request");
 
     form?.addEventListener("submit", (event) => {
         event.preventDefault();
 
-        const data = new FormData(event.target);
-        const values = Object.fromEntries(data.entries());
-        const confirmEmail = values["Confirm-Email"];
+        const confirmEmail = document.getElementById("confirm-email")?.value;
 
-        window.location = `/confirmation/audience-request?intro-ask=skip${confirmEmail?.length ? "&confirm-email=" + confirmEmail : ""}`;
+        if (confirmEmail) {
+            const expires = new Date(Date.now() + (2 * 60 * 60 * 1000)).toUTCString();
+            document.cookie = `CMT-QUOTE-SUBMIT-EMAIL=${confirmEmail}; expires=${expires}; path=/; domain=.centiment.co; SameSite=Lax`;
+        }
+
+        event.target.requestSubmit();
+    });
+});
+
+/**
+ * /forms/audience-request-accomplish
+ */
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("wf-form-Audience-Request-Accomplish");
+
+    form?.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const confirmEmail = document.getElementById("confirm-email")?.value;
+
+        if (confirmEmail) {
+            const expires = new Date(Date.now() + (2 * 60 * 60 * 1000)).toUTCString();
+            document.cookie = `CMT-QUOTE-SUBMIT-EMAIL=${confirmEmail}; expires=${expires}; path=/; domain=.centiment.co; SameSite=Lax`;
+        }
+
+        event.target.requestSubmit();
     });
 });
