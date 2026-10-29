@@ -169,7 +169,7 @@ test.describe("the panel's status and US law wording", () => {
 });
 
 test.describe("keyboard", () => {
-    test("the banner is the first tab stop on the page, its controls follow in order, and nothing moves focus", async ({ page }) => {
+    test("the banner is the first tab stop on the page, its controls follow in order, and nothing moves focus", async ({ page, browserName }) => {
         await page.goto(EuPage);
         await expect(Banner.get(page)).toBeVisible();
 
@@ -181,25 +181,25 @@ test.describe("keyboard", () => {
             Banner.get(page).getByRole("button", { name: "Reject all" }),
             Banner.get(page).getByRole("button", { name: "Accept all" }),
         ]) {
-            await page.keyboard.press("Tab");
+            await Page.pressTab(page, browserName);
             await expect(control).toBeFocused();
         }
     });
 
-    test("Choose cookies and the Privacy policy link draw their focus ring on the text, while Reject all keeps its 3px gap", async ({ page }) => {
+    test("Choose cookies and the Privacy policy link draw their focus ring on the text, while Reject all keeps its 3px gap", async ({ page, browserName }) => {
         await page.goto(EuPage);
         for (const [control, offset] of [
             [Banner.get(page).getByRole("button", { name: "Choose cookies" }), "0px"],
             [Banner.get(page).getByRole("link", { name: "Privacy policy" }), "0px"],
             [Banner.get(page).getByRole("button", { name: "Reject all" }), "3px"],
         ]) {
-            await page.keyboard.press("Tab");
+            await Page.pressTab(page, browserName);
             await expect(control).toBeFocused();
             await expect(control).toHaveCSS("outline-offset", offset);
         }
     });
 
-    test("the panel is modal: its controls follow in tab order, the page behind cannot be focused, Esc closes it and focus returns to the link", async ({ page }) => {
+    test("the panel is modal: its controls follow in tab order, the page behind cannot be focused, Esc closes it and focus returns to the link", async ({ page, browserName }) => {
         await page.goto(UsPage);
 
         const link = Page.getFooterLink(page);
@@ -219,7 +219,7 @@ test.describe("keyboard", () => {
         await expect(Panel.get(page)).toBeFocused();
 
         for (const control of controls) {
-            await page.keyboard.press("Tab");
+            await Page.pressTab(page, browserName);
             await expect(control).toBeFocused();
         }
 
@@ -339,7 +339,7 @@ test.describe("the panel's switches, links and phone layout", () => {
         for (const name of ["Reject all", "Accept all"]) {
             await expect(Panel.get(page).getByRole("button", { name })).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
             await expect(Panel.get(page).getByRole("button", { name })).toHaveCSS("color", "rgb(32, 31, 36)");
-            // Chromium rounds a border width down to whole pixels, so it draws the 1.5px border 1px wide, on a 2x screen too.
+            // The 1.5px border is drawn 1px wide: Chromium and Firefox round it down on every screen, WebKit only on a 1x screen like the tests'.
             await expect(Panel.get(page).getByRole("button", { name })).toHaveCSS("border-top-width", "1px");
             await expect(Panel.get(page).getByRole("button", { name })).toHaveCSS("border-top-color", "rgb(201, 201, 202)");
         }

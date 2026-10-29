@@ -15,7 +15,11 @@ export default defineConfig({
     fullyParallel: true,
     reporter: [["list"]],
     use: {
-        browserName: "chromium",
         headless: true,
     },
+    projects: [
+        { name: "chromium", use: { browserName: "chromium" } },
+        { name: "firefox", use: { browserName: "firefox" } },
+        { name: "webkit", use: { browserName: "webkit" } },
+    ],
 });

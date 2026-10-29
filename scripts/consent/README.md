@@ -187,7 +187,7 @@ Rolling back a bad release: revert the commit, then purge the file from Cloudfla
 
 ```sh
 pnpm install
-pnpm exec playwright install chromium   # once, for the browser tests
+pnpm exec playwright install chromium firefox webkit   # once, for the browser tests
 pnpm test           # the Worker and the script's rules, on Node's own test runner
-pnpm test:browser   # the script on Playwright; every request is routed, so no server runs and nothing reaches the network
+pnpm test:browser   # the script on Playwright, in Chromium, Firefox and WebKit; every request is routed, so no server runs and nothing reaches the network
 ```
