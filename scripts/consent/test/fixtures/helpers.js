@@ -27,6 +27,8 @@ const breakSetAttributeInPage = (brokenName) => {
     };
 };
 
+const isWebKitOnMac = (browserName) => browserName === "webkit" && process.platform === "darwin";
+
 export const Page = {
     getUrl: ({ host = "www.centiment.co", https = true, region = "US-NY", gtm, banner, css, preconsent, defer = true, tagCopies = 1 } = {}) => {
         const query = new URLSearchParams({ region });
@@ -76,6 +78,8 @@ export const Page = {
     }),
 
     setVisibility: (page, visibility) => page.evaluate((next) => window.fixtureVisibility(next), visibility),
+
+    pressTab: (page, browserName) => page.keyboard.press(isWebKitOnMac(browserName) ? "Alt+Tab" : "Tab"),
 
     focusWindow: (page) => page.evaluate(() => window.dispatchEvent(new Event("focus"))),
 
