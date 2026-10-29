@@ -57,7 +57,7 @@ Every page gets one link that opens the panel. Links added after the page loads 
 <a href="https://www.centiment.co/legal/privacy-policy" data-action="cookie-preferences">Your privacy choices</a>
 ```
 
-Put California's opt-out icon beside the link on every site, since California's rules require it there, drawn in the link's own text color with `v1/privacy-choices-icon-mono.svg`: the California Attorney General's icon in one color, with the X cut out, for a CSS mask or inline SVG. California's rules let a site change the icon's colors so it stays conspicuous on its page (11 CCR § 7015(b)(3), since 1 January 2026); `v1/privacy-choices-icon.svg` is the Attorney General's original file from oag.ca.gov/privacy/ccpa/icons-download. Keep it about the size of the page's other icons, and hide it from screen readers, so the link's text names the link:
+Put California's opt-out icon beside the link on every site, since California's rules require it there, drawn in the link's own text color with `v1/privacy-choices-icon-mono.svg`: the California Attorney General's icon in one color, with the X cut out, for a CSS mask or inline SVG. California's rules let a site change the icon's colors so it stays conspicuous on its page (11 CCR § 7015(b)(3), since 1 January 2026); `v1/privacy-choices-icon.svg` is the Attorney General's original file from oag.ca.gov/privacy/ccpa/icons-download. Make it as tall as the link's capital letters, about the size of the other header and footer icons, as California's rules ask (§ 7015(b)). The CSS sizes it in em, so it follows each site's text size, and leaves it on the text's baseline; in a flex row, center it with the text instead. Hide it from screen readers, so the link's text names the link:
 
 ```html
 <a href="https://www.centiment.co/legal/privacy-policy" data-action="cookie-preferences"><span class="privacy-choices-icon" aria-hidden="true"></span> Your privacy choices</a>
@@ -66,9 +66,8 @@ Put California's opt-out icon beside the link on every site, since California's 
 ```css
 .privacy-choices-icon {
     display: inline-block;
-    width: 30px;
-    height: 14px;
-    vertical-align: middle;
+    width: 1.5em;
+    height: 0.7em;
     background-color: currentColor;
     forced-color-adjust: none;
     -webkit-mask: url("https://assets.centiment.co/scripts/consent/v1/privacy-choices-icon-mono.svg") center / contain no-repeat;
