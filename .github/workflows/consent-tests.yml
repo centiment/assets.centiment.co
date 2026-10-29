@@ -1,0 +1,40 @@
+name: Consent tests
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "scripts/consent/**"
+      - "workers/consent/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "playwright.config.js"
+      - ".github/workflows/consent-tests.yml"
+  pull_request:
+    paths:
+      - "scripts/consent/**"
+      - "workers/consent/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "playwright.config.js"
+      - ".github/workflows/consent-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 10
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test
+      - run: pnpm test:browser
