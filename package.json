@@ -1,0 +1,16 @@
+{
+    "name": "assets-centiment-co",
+    "private": true,
+    "type": "module",
+    "engines": {
+        "node": ">=22"
+    },
+    "scripts": {
+        "test": "node --test \"workers/**/*.test.js\" \"scripts/**/*.test.js\"",
+        "test:browser": "playwright test",
+        "check:live": "curl -fsS https://assets.centiment.co/scripts/consent/v1/consent.js | sed -E 's/(const PlacedRegion = )\"[A-Z0-9-]+\";/\\1\"__CENTIMENT_CONSENT_REGION__\";/' | diff scripts/consent/v1/consent.js - && echo The live file matches v1/consent.js"
+    },
+    "devDependencies": {
+        "@playwright/test": "^1.64.1"
+    }
+}
