@@ -76,7 +76,9 @@ test.describe("an EU visitor before a choice", () => {
         expect(await page.evaluate(() => window.disableHubSpotCookieBanner)).toBe(true);
     });
 
-    test("an event the page pushed before the script ran moves behind the defaults, so Tag Manager reads the consent state first", async ({ page }) => {
+    test("an event the page pushed before the script ran moves behind the defaults, so Tag Manager reads the consent state first, and the console stays quiet", async ({ page }) => {
+        const warnings = Page.getWarnings(page);
+
         await page.addInitScript(() => {
             window.dataLayer = [{ event: "page_early" }];
         });
@@ -88,6 +90,29 @@ test.describe("an EU visitor before a choice", () => {
         expect(Google.getConsentCommandIndex(entries, "default")).toBe(0);
         expect(Google.getEventIndex(entries, "page_early")).toBeGreaterThan(0);
         expect(Google.getEventIndex(entries, "page_early")).toBeLessThan(Google.getEventIndex(entries, "gtm.js"));
+        expect(warnings).toEqual([]);
+    });
+
+    test("a Google consent command the page pushed before the script ran comes after the defaults, and the console warns", async ({ page }) => {
+        const warnings = Page.getWarnings(page);
+
+        await page.addInitScript(() => {
+            window.dataLayer = [];
+
+            function gtag() {
+                window.dataLayer.push(arguments);
+            }
+
+            gtag("consent", "default", { ad_storage: "granted", analytics_storage: "granted" });
+        });
+        await page.goto(EuPage);
+        await Google.waitForTagManager(page);
+
+        expect(Google.getConsentCommands(await Google.getDataLayer(page), "default")).toEqual([
+            expect.objectContaining({ ad_storage: "denied" }),
+            { ad_storage: "granted", analytics_storage: "granted" },
+        ]);
+        expect(warnings).toEqual([expect.stringContaining("the page sets Google consent itself")]);
     });
 
     test("with Tag Manager already on the page, an event the page pushed earlier stays first and is not pushed again, and the console warns", async ({ page }) => {

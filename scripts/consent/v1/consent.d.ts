@@ -21,7 +21,7 @@ export interface ConsentState {
 export interface CentimentConsent {
     get(): ConsentState;
     onChange(callback: (state: ConsentState) => void): () => void;
-    open(opener?: HTMLElement | null): void;
+    open(opener?: HTMLElement | Event | null): void;
     showBanner(): void;
     hideBanner(): void;
 }

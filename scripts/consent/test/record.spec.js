@@ -161,7 +161,7 @@ test.describe("GPC over a stored choice", () => {
     test("an http page that cannot see a Secure choice cookie leaves the advertising cookies alone", async ({ page, context }) => {
         await Page.withGpc(page);
         await context.addCookies([...Cookies.getTracking(), { ...Cookies.createChoiceCookie({ method: "panel", region: "US-CA", gpc: true }), secure: true }]);
-        await page.goto(CaliforniaPage);
+        await page.goto(Page.getUrl({ region: "US-CA", https: false }));
 
         const names = await Cookies.getNames(context);
 
@@ -229,14 +229,14 @@ test.describe("Analytics off and GPC's advertising off", () => {
 });
 
 test.describe("the choice cookie", () => {
-    test("on a centiment.co host it is set on .centiment.co for 12 months", async ({ page, context }) => {
+    test("on a centiment.co host it is a Secure cookie on .centiment.co for 12 months", async ({ page, context }) => {
         await page.goto(EuPage);
         await page.getByRole("button", { name: "Accept all" }).click();
 
         const cookie = await Cookies.getChoiceCookie(context);
         const now = Date.now() / 1000;
 
-        expect(cookie).toMatchObject({ domain: ".centiment.co", path: "/", secure: false, sameSite: "Lax" });
+        expect(cookie).toMatchObject({ domain: ".centiment.co", path: "/", secure: true, sameSite: "Lax" });
         expect(cookie.expires).toBeGreaterThan(now + YearSeconds - 60);
         expect(cookie.expires).toBeLessThan(now + YearSeconds + 60);
     });
@@ -265,13 +265,6 @@ test.describe("the choice cookie", () => {
 
         expect(cookie.expires).toBeGreaterThan(now + YearSeconds - 60);
         expect(cookie.expires).toBeLessThan(now + YearSeconds + 60);
-    });
-
-    test("on https it is Secure", async ({ page, context }) => {
-        await page.goto(Page.getUrl({ region: "DE", https: true }));
-        await page.getByRole("button", { name: "Accept all" }).click();
-
-        expect(await Cookies.getChoiceCookie(context)).toMatchObject({ domain: ".centiment.co", secure: true });
     });
 
     test("on a host outside centiment.co it is host-only", async ({ page, context }) => {

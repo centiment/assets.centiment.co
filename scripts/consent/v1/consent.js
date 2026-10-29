@@ -132,6 +132,7 @@
         getTagManagerIdText: (value) => `Centiment consent: data-gtm="${value}" is not a Tag Manager container id such as GTM-XXXXXXX, so Tag Manager does not load.`,
         tagManagerRunning: "Centiment consent: Tag Manager or a Google tag already runs on this page, so it may have fired tags before the consent defaults. Load Tag Manager only through data-gtm.",
         getHeldCategoryText: (category) => `Centiment consent: a held script has data-consent="${category}", which is neither analytics nor advertising, so it never runs.`,
+        pageConsentCommand: "Centiment consent: the page sets Google consent itself, and its command now comes after the consent defaults. Remove the page's own gtag(\"consent\", ...) and let this script set consent.",
     };
 
     const state = {
@@ -199,7 +200,10 @@
         const canMovePageEntries = Array.isArray(window.dataLayer) && !isTagManagerRunning;
         const pageEntries = canMovePageEntries ? window.dataLayer.splice(0) : [];
 
+        const isPageConsentCommand = (entry) => Object.prototype.toString.call(entry) === "[object Arguments]" && entry[0] === "consent";
+
         if (isTagManagerRunning) console.warn(InstallWarning.tagManagerRunning);
+        if (pageEntries.some(isPageConsentCommand)) console.warn(InstallWarning.pageConsentCommand);
 
         window._hsp = window._hsp || [];
         window.disableHubSpotCookieBanner = true;
