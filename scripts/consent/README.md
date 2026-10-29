@@ -154,7 +154,7 @@ A later format must keep reading version 1 records: a script that read only its 
 
 ## The region Worker
 
-`workers/consent/` serves `v1/consent.js` with the visitor's region placed in it, from Cloudflare's `request.cf`. Its route, in `wrangler.toml`, matches this one file's address on assets.centiment.co, so Cloudflare hands each request for the file to the Worker, and every other file goes to GitHub Pages as before. The Worker fetches the file from GitHub Pages and replaces the quoted placeholder in it with the region code, such as `"US-CA"`. On any error it serves the file unchanged, which the script reads as "the Worker did not run" and treats with the opt-in rules.
+`workers/consent/` serves `v1/consent.js` with the visitor's region placed in it, from Cloudflare's `request.cf`. Its route, in `wrangler.toml`, matches this one file's address on assets.centiment.co, with or without a query string such as `?v=2`, so Cloudflare hands each request for the file to the Worker, and every other file goes to GitHub Pages as before. The route ends in `*` because Cloudflare matches a route against the whole address, query string included. The Worker fetches the file from GitHub Pages and replaces the quoted placeholder in it with the region code, such as `"US-CA"`. On any error it serves the file unchanged, which the script reads as "the Worker did not run" and treats with the opt-in rules.
 
 Why the Worker changes the headers:
 
@@ -168,7 +168,7 @@ Going live, once:
 2. Deploy from `workers/consent/`: first `npx wrangler deploy --dry-run`, which bundles the Worker without publishing it, then `npx wrangler deploy`. The deployer's environment holds the account id as `CLOUDFLARE_ACCOUNT_ID`, never `wrangler.toml`, since this repo is public, and an API token as `CLOUDFLARE_API_TOKEN`, made from Cloudflare's Edit Cloudflare Workers template and limited to Centiment's account and the centiment.co zone, so it may edit the Worker and the zone's Workers routes.
 3. In the centiment.co zone's Workers Routes, set the route's request limit failure mode to Fail open, so a day over the plan's request limit serves the plain file instead of an error.
 4. Add a Cache Rule on the same path with Browser TTL set to respect the origin, so a copy the Worker did not place stays in browsers for GitHub Pages' 10 minutes, not the zone's 4 hours.
-5. Check that `curl -s -o /dev/null -D - https://assets.centiment.co/scripts/consent/v1/consent.js` shows `Cache-Control: private, max-age=3600`, which means the Worker served the file (a HEAD request, such as `curl -I`, gets GitHub's headers instead).
+5. Check that `curl -s -o /dev/null -D - https://assets.centiment.co/scripts/consent/v1/consent.js` shows `Cache-Control: private, max-age=3600`, which means the Worker served the file (a HEAD request, such as `curl -I`, gets GitHub's headers instead), and that the same request with `?v=1` after `consent.js` shows it too.
 
 No site switches to the script before step 5 passes: until then the file carries no region, so every visitor, in the US too, gets the opt-in rules.
 
