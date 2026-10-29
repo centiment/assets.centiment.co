@@ -57,7 +57,7 @@ export const getFixturePage = (query) => {
     const options = `${getAttributeText("data-gtm", gtm)}${getAttributeText("data-banner", query.get("banner"))}`;
     const deferAttribute = query.get("defer") === "off" ? "" : " defer";
 
-    const consentTag = `<script src="${ScriptUrl}?${script}"${options}${deferAttribute} data-cfasync="false"></script>`;
+    const consentTag = `<script data-cfasync="false" src="${ScriptUrl}?${script}"${options}${deferAttribute}></script>`;
     const consentTags = Array(Number(query.get("tagCopies") ?? 1)).fill(consentTag).join("\n");
 
     return `

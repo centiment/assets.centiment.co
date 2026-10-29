@@ -25,8 +25,10 @@ import {
     WorkerDidNotRun,
 } from "./fixtures/index.js";
 
-test.describe("an open page catches up with a choice made elsewhere", () => {
-    test("on http, a tab shown again applies a withdrawal from another tab and tells the page, without a reload", async ({ context }) => {
+test.describe("without cookieStore, as on an http page or an older browser, an open page catches up with a choice made elsewhere when the visitor comes back to it", () => {
+    test.beforeEach(({ context }) => Page.hideCookieStore(context));
+
+    test("a tab shown again applies a withdrawal from another tab and tells the page, without a reload", async ({ context }) => {
         const first = await context.newPage();
 
         await Page.controlVisibility(first);
@@ -132,19 +134,20 @@ test.describe("an open page catches up with a choice made elsewhere", () => {
 
         expect(Google.getConsentCommands(await Google.getDataLayer(page), "update")).toEqual([expect.objectContaining({ ce_google_tags: "denied" })]);
     });
+});
 
-    test("on https a tab in the background catches up at once, when the browser reports the change", async ({ context }) => {
-        const url = Page.getUrl({ region: "US-NY", https: true });
+test.describe("with cookieStore, an open page catches up with a choice made elsewhere", () => {
+    test("a tab in the background catches up at once, when the browser reports the change", async ({ context }) => {
         const first = await context.newPage();
 
         await Page.controlVisibility(first);
-        await first.goto(url);
+        await first.goto(UsPage);
         await Held.waitForRuns(first, AllHeldScripts.length);
         await Page.setVisibility(first, "hidden");
 
         const second = await context.newPage();
 
-        await second.goto(url);
+        await second.goto(UsPage);
         await Panel.save(second, { analytics: false });
         await first.waitForFunction(() => window.centimentConsent.get().analytics === false);
 
@@ -152,7 +155,7 @@ test.describe("an open page catches up with a choice made elsewhere", () => {
         expect(Google.getConsentCommands(await Google.getDataLayer(first), "update")).toEqual([expect.objectContaining({ analytics_storage: "denied" })]);
     });
 
-    test("on https a change the browser reports to another cookie does not make the page read its cookies again", async ({ page }) => {
+    test("a change the browser reports to another cookie does not make the page read its cookies again", async ({ page }) => {
         await page.addInitScript(() => {
             const descriptor = Object.getOwnPropertyDescriptor(Document.prototype, "cookie");
 
@@ -167,7 +170,7 @@ test.describe("an open page catches up with a choice made elsewhere", () => {
                 set(value) { descriptor.set.call(this, value); },
             });
         });
-        await page.goto(Page.getUrl({ region: "US-NY", https: true }));
+        await page.goto(UsPage);
         await Page.settle(page);
 
         const readsBefore = await page.evaluate(() => window.cookieReads);
@@ -190,19 +193,18 @@ test.describe("an open page catches up with a choice made elsewhere", () => {
         expect(readsAfter).toBe(readsBefore);
     });
 
-    test("on https a choice deleted in another tab brings the banner back at once, with no focus or visibility event", async ({ context }) => {
-        const url = Page.getUrl({ region: "DE", https: true });
+    test("a choice deleted in another tab brings the banner back at once, with no focus or visibility event", async ({ context }) => {
         const first = await context.newPage();
 
         await Page.controlVisibility(first);
-        await first.goto(url);
+        await first.goto(EuPage);
         await first.getByRole("button", { name: "Reject all" }).click();
         await expect(Banner.get(first)).toHaveCount(0);
         await Page.setVisibility(first, "hidden");
 
         const second = await context.newPage();
 
-        await second.goto(url);
+        await second.goto(EuPage);
         await second.evaluate((name) => window.cookieStore.delete({ name, domain: "centiment.co" }), CookieName);
 
         await expect(Banner.get(first)).toBeVisible();

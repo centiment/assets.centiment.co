@@ -4,10 +4,10 @@ One script for every Centiment site and app. It sets Google Consent Mode, loads 
 
 ## Install
 
-Put the tag first in the head, before any other script, with `defer` so the page never waits for it, and with `data-cfasync="false"` so Cloudflare's Rocket Loader leaves it alone:
+Put the tag first in the head, before any other script, with `defer` so the page never waits for it, and with `data-cfasync="false"` before `src`, where Cloudflare's docs require it, so Rocket Loader leaves it alone:
 
 ```html
-<script src="https://assets.centiment.co/scripts/consent/v1/consent.js" data-gtm="GTM-XXXXXXX" defer data-cfasync="false"></script>
+<script data-cfasync="false" src="https://assets.centiment.co/scripts/consent/v1/consent.js" data-gtm="GTM-XXXXXXX" defer></script>
 ```
 
 | Option | Values | Use |
@@ -19,7 +19,7 @@ Then remove the site's own Tag Manager snippet and turn HubSpot's own cookie ban
 
 With `defer` the tag runs once the HTML is parsed: after every script, inline or loaded, that has none of `defer`, `async` or `type="module"`, and after any async script that has already arrived. A tag left on the page outside Tag Manager, such as an old Tag Manager snippet, gtag.js or a pixel, can therefore run before the consent defaults.
 
-So every tag besides this one goes into Tag Manager or is held (see Scripts that cannot move into Tag Manager). The script loads Tag Manager itself, after the consent defaults, so if the script fails to load no tags run. Anything the page pushes to `dataLayer` before the script runs moves behind the defaults, so Tag Manager reads the consent state first. If Tag Manager already runs on the page, those entries stay where they are, so Tag Manager does not get them twice, and the console warns: load Tag Manager only through `data-gtm`.
+So every tag besides this one goes into Tag Manager or is held (see Scripts that cannot move into Tag Manager). The script loads Tag Manager itself, after the consent defaults, so if the script fails to load no tags run. Anything the page pushes to `dataLayer` before the script runs moves behind the defaults, so Tag Manager reads the consent state first. A Google consent command the page pushed, from a `gtag("consent", ...)` left on the page, then comes after the script's defaults, so the console warns: remove it and let the script set consent. If Tag Manager already runs on the page, those entries stay where they are, so Tag Manager does not get them twice, and the console warns: load Tag Manager only through `data-gtm`.
 
 Leave the tag without an `integrity` attribute. The region Worker writes each visitor's region into the file and the file changes with each release, so no single hash matches and the browser would refuse to run the script.
 
@@ -121,7 +121,7 @@ Hold `scripts/tracker.js` under Analytics too, since it writes the `CentimentTra
 
 - `get()` returns `{ analytics, advertising, decided, rules, region, gpc }`. `decided` is true once a choice the visitor made in the banner or the panel counts here (see Who sees what); a gpc record the script saved itself leaves it false. `rules` is `"opt-in"` or `"opt-out"`; `region` is the consent region (`"US-CA"`, `"DE"`, `"XX"` when Cloudflare could not place the visitor, `null` when the Worker did not run), for consent only, never for geo features; `gpc` is true when the browser sends GPC and it applies here.
 - `onChange(callback)` calls `callback(get())` at once and after every change, a change made in another tab included; it returns a function that unsubscribes.
-- `open(opener)` opens the panel, and when it closes gives focus back to `opener`, or without one to whatever had focus when it opened, as long as that element is still on the page. The apps pass their menu button, since the menu item that was clicked is gone by then. Call it from the click itself: on a browser that cannot open a dialog it opens the Privacy policy in a new tab, which a browser blocks outside a click.
+- `open(opener)` opens the panel, and when it closes gives focus back to `opener`, or without one to whatever had focus when it opened, as long as that element is still on the page. Passed straight to a click listener, it gets the event, which counts as no opener. The apps pass their menu button, since the menu item that was clicked is gone by then. Call it from the click itself: on a browser that cannot open a dialog it opens the Privacy policy in a new tab, which a browser blocks outside a click.
 - `showBanner()` shows the banner to an undecided visitor in an opt-in region and does nothing otherwise; `hideBanner()` removes it. The apps call them on login, signup and quote pages and when leaving them.
 
 The page also gets the window event `ce_consent_change`, with `get()` as its `detail`, after every change of consent, made on the page or caught up from another tab or site, and never as the page loads. The `dataLayer` event `ce_consent_update` (see Tag Manager setup) comes after every change too, and also as each page loads wherever the choice is already known: once the visitor has decided, and from the start under the opt-out rules. `v1/consent.d.ts` holds the full types. Each site or app copies the part it uses into its own repo, since another repo cannot import this file, and updates its copy when the file changes.

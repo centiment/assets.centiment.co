@@ -28,7 +28,7 @@ const breakSetAttributeInPage = (brokenName) => {
 };
 
 export const Page = {
-    getUrl: ({ host = "www.centiment.co", https = false, region = "US-NY", gtm, banner, css, preconsent, defer = true, tagCopies = 1 } = {}) => {
+    getUrl: ({ host = "www.centiment.co", https = true, region = "US-NY", gtm, banner, css, preconsent, defer = true, tagCopies = 1 } = {}) => {
         const query = new URLSearchParams({ region });
 
         if (gtm !== undefined) query.set("gtm", gtm);
@@ -59,6 +59,10 @@ export const Page = {
 
     withGpc: (page) => page.addInitScript(() => {
         Object.defineProperty(Navigator.prototype, "globalPrivacyControl", { get: () => true, configurable: true });
+    }),
+
+    hideCookieStore: (context) => context.addInitScript(() => {
+        Object.defineProperty(window, "cookieStore", { value: undefined, configurable: true });
     }),
 
     controlVisibility: (page) => page.addInitScript(() => {
