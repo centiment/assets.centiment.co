@@ -608,7 +608,7 @@
 
     const Styles = `
         :host { all: initial !important; display: contents !important; font-family: inherit !important; }
-        .banner, dialog { font-family: inherit; font-size: 14px; font-weight: 400; font-style: normal; line-height: 20px; letter-spacing: normal; word-spacing: normal; text-align: left; text-indent: 0; text-transform: none; text-shadow: none; white-space: normal; color: #201f24; visibility: visible; -webkit-font-smoothing: antialiased; }
+        .banner, dialog { font-family: inherit; font-size: 13px; font-weight: 400; font-style: normal; line-height: 20px; letter-spacing: normal; word-spacing: normal; text-align: left; text-indent: 0; text-transform: none; text-shadow: none; white-space: normal; color: #201f24; visibility: visible; -webkit-font-smoothing: antialiased; }
         *, *::before, *::after { box-sizing: border-box; }
         :focus-visible { outline: 2.5px solid #8f8e91; outline-offset: 3px; }
         a:focus-visible, .link:focus-visible { outline-offset: 0; }
@@ -616,12 +616,12 @@
         a:hover { color: #4e5af9; }
         .banner { position: fixed; z-index: 2147483000; right: 16px; bottom: 16px; left: 16px; max-width: 400px; margin-left: auto; padding: 20px; display: grid; gap: 8px; background: #fff; border: 1px solid #ededed; border-radius: 8px; box-shadow: 0 0 20px 0 rgba(32, 31, 36, 0.16); }
         .banner[hidden] { display: none; }
-        .title { margin: 0; font-size: 16px; line-height: 24px; font-weight: 700; }
+        .title { margin: 0; font-size: 16px; line-height: 24px; font-weight: 400; }
         .text, .item-text, .foot { margin: 0; color: #5e5d61; }
         .link { padding: 0; font: inherit; background: none; border: 0; color: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
         .link:hover { color: #4e5af9; }
         .actions { margin-top: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .button { min-height: 40px; padding: 8px 16px; font: inherit; font-weight: 600; border: 1.5px solid #c9c9ca; border-radius: 2px; background: transparent; color: #201f24; cursor: pointer; transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1), border-color 200ms cubic-bezier(0.4, 0, 0.2, 1); }
+        .button { min-height: 32px; padding: 5px 11px; font: inherit; font-weight: 500; border: 1px solid #c9c9ca; border-radius: 2px; background: transparent; color: #201f24; cursor: pointer; transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1), border-color 200ms cubic-bezier(0.4, 0, 0.2, 1); }
         .button:hover { background: #f6f6f6; }
         .button-primary { border-color: #4e5af9; background: #4e5af9; color: #fff; }
         .button-primary:hover { border-color: #7a83fb; background: #7a83fb; }
@@ -636,14 +636,13 @@
         .status { margin: 0; padding: 8px 12px; border: 1px solid #ededed; border-radius: 4px; background: #f6f6f6; }
         .items { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
         .item { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 12px; border: 1px solid #ededed; border-radius: 8px; }
-        .item-title { display: inline-block; font-weight: 600; color: #201f24; }
+        .item-title { display: inline-block; font-weight: 500; color: #201f24; }
         label { cursor: pointer; }
         .item-text { margin-top: 2px; }
         .always { white-space: nowrap; color: #5e5d61; }
         .note { margin: 8px 0 0; padding: 8px; border: 1px solid #feba00; border-radius: 4px; background: #fff9e8; color: #795f17; }
         .switch { -webkit-appearance: none; appearance: none; flex: none; width: 32px; height: 16px; margin: 2px 0 0; border-radius: 8px; background: radial-gradient(circle, #fff 5.5px, transparent 6px) 0 0 / 16px 16px no-repeat, #8f8e91; cursor: pointer; transition: background-position 100ms cubic-bezier(0.4, 0, 0.2, 1), background-color 100ms cubic-bezier(0.4, 0, 0.2, 1); }
         .switch:checked { background-position: 16px 0; background-color: #201f24; }
-        .foot { font-size: 13px; }
         .footer { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px; border-top: 1px solid #ededed; }
         .footer .button { min-width: 120px; }
         @media ${SpanningBannerScreen} {

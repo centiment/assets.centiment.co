@@ -339,7 +339,6 @@ test.describe("the panel's switches, links and phone layout", () => {
         for (const name of ["Reject all", "Accept all"]) {
             await expect(Panel.get(page).getByRole("button", { name })).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
             await expect(Panel.get(page).getByRole("button", { name })).toHaveCSS("color", "rgb(32, 31, 36)");
-            // Chromium rounds a border width down to whole pixels, so it draws the 1.5px border 1px wide, on a 2x screen too.
             await expect(Panel.get(page).getByRole("button", { name })).toHaveCSS("border-top-width", "1px");
             await expect(Panel.get(page).getByRole("button", { name })).toHaveCSS("border-top-color", "rgb(201, 201, 202)");
         }
@@ -357,7 +356,7 @@ test.describe("the panel's switches, links and phone layout", () => {
         const [rejectBox, saveBox, acceptBox] = boxes;
 
         expect(new Set(boxes.map((box) => box.x)).size).toBe(1);
-        expect(boxes.map((box) => box.height)).toEqual([40, 40, 40]);
+        expect(boxes.map((box) => box.height)).toEqual([32, 32, 32]);
         expect(rejectBox.y).toBeLessThan(saveBox.y);
         expect(saveBox.y).toBeLessThan(acceptBox.y);
     });
