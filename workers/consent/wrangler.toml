@@ -1,0 +1,7 @@
+name = "consent-region"
+main = "index.js"
+compatibility_date = "2026-10-01"
+
+routes = [
+    { pattern = "assets.centiment.co/scripts/consent/v1/consent.js*", zone_name = "centiment.co" },
+]
