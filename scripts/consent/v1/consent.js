@@ -621,8 +621,8 @@
         .link { padding: 0; font: inherit; background: none; border: 0; color: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
         .link:hover { color: #4e5af9; }
         .actions { margin-top: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .button { min-height: 32px; padding: 5px 11px; font: inherit; font-weight: 500; border: 1px solid #c9c9ca; border-radius: 2px; background: transparent; color: #201f24; cursor: pointer; transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1), border-color 200ms cubic-bezier(0.4, 0, 0.2, 1); }
-        .button:hover { background: #f6f6f6; }
+        .button { min-height: 32px; padding: 5px 11px; font: inherit; font-weight: 500; border: 1px solid #7a83fb; border-radius: 2px; background: transparent; color: #4e5af9; cursor: pointer; transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1), border-color 200ms cubic-bezier(0.4, 0, 0.2, 1); }
+        .button:hover { background: #e5e6f9; }
         .button-primary { border-color: #4e5af9; background: #4e5af9; color: #fff; }
         .button-primary:hover { border-color: #7a83fb; background: #7a83fb; }
         dialog { width: min(600px, calc(100vw - 32px)); max-height: calc(100% - 32px); padding: 0; border: 0; border-radius: 8px; background: #fff; box-shadow: 0 0 20px 0 rgba(32, 31, 36, 0.08); overflow: auto; }
@@ -643,13 +643,15 @@
         .note { margin: 8px 0 0; padding: 8px; border: 1px solid #feba00; border-radius: 4px; background: #fff9e8; color: #795f17; }
         .switch { -webkit-appearance: none; appearance: none; flex: none; width: 32px; height: 16px; margin: 2px 0 0; border-radius: 8px; background: radial-gradient(circle, #fff 5.5px, transparent 6px) 0 0 / 16px 16px no-repeat, #8f8e91; cursor: pointer; transition: background-position 100ms cubic-bezier(0.4, 0, 0.2, 1), background-color 100ms cubic-bezier(0.4, 0, 0.2, 1); }
         .switch:checked { background-position: 16px 0; background-color: #201f24; }
-        .footer { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px; border-top: 1px solid #ededed; }
+        .footer { display: flex; gap: 8px; padding: 12px 20px; border-top: 1px solid #ededed; }
         .footer .button { min-width: 120px; }
+        .footer .button-primary { margin-left: auto; }
         @media ${SpanningBannerScreen} {
             .banner { max-width: none; }
         }
         @media ${PhoneScreen} {
             .footer { flex-direction: column; }
+            .footer .button-primary { margin-left: 0; }
         }
         @media (forced-colors: active) {
             .switch { -webkit-appearance: auto; appearance: auto; width: 16px; background: none; }
@@ -762,8 +764,8 @@
                 <h2 class="title" id="consent-banner-title">${ConsentText.bannerTitle}</h2>
                 <p class="text">${ConsentText.bannerText} <button type="button" class="link" data-consent-action="${ConsentAction.choose}">${ConsentText.chooseCookies}</button> ${ConsentText.orSeeOur} ${PrivacyPolicyLink}</p>
                 <div class="actions">
-                    <button type="button" class="button button-primary" data-consent-action="${ConsentAction.reject}">${ConsentText.rejectAll}</button>
-                    <button type="button" class="button button-primary" data-consent-action="${ConsentAction.accept}">${ConsentText.acceptAll}</button>
+                    <button type="button" class="button" data-consent-action="${ConsentAction.reject}">${ConsentText.rejectAll}</button>
+                    <button type="button" class="button" data-consent-action="${ConsentAction.accept}">${ConsentText.acceptAll}</button>
                 </div>
             </section>`,
 
@@ -879,8 +881,8 @@
                     </div>
                     <div class="footer">
                         <button type="button" class="button" data-consent-action="${ConsentAction.reject}">${ConsentText.rejectAll}</button>
-                        <button type="button" class="button button-primary" data-consent-action="${ConsentAction.save}">${ConsentText.saveChoices}</button>
                         <button type="button" class="button" data-consent-action="${ConsentAction.accept}">${ConsentText.acceptAll}</button>
+                        <button type="button" class="button button-primary" data-consent-action="${ConsentAction.save}">${ConsentText.saveChoices}</button>
                     </div>
                 </dialog>`;
         },

@@ -164,7 +164,7 @@ test.describe("an EU visitor before a choice", () => {
         expect(await Held.getRuns(page)).toEqual([]);
     });
 
-    test("the banner offers Reject all and Accept all in the same filled style, at the same size", async ({ page }) => {
+    test("the banner offers Reject all and Accept all in the same blue outline, at the same size", async ({ page }) => {
         await page.goto(EuPage);
 
         const reject = page.getByRole("button", { name: "Reject all" });
@@ -176,9 +176,13 @@ test.describe("an EU visitor before a choice", () => {
         expect(rejectBox.height).toBe(acceptBox.height);
 
         for (const button of [reject, accept]) {
-            await expect(button).toHaveCSS("background-color", "rgb(78, 90, 249)");
-            await expect(button).toHaveCSS("color", "rgb(255, 255, 255)");
+            await expect(button).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+            await expect(button).toHaveCSS("color", "rgb(78, 90, 249)");
+            await expect(button).toHaveCSS("border-top-color", "rgb(122, 131, 251)");
         }
+
+        await reject.hover();
+        await expect(reject).toHaveCSS("background-color", "rgb(229, 230, 249)");
 
         await expect(Banner.get(page).getByRole("button", { name: "Choose cookies" })).toBeVisible();
     });

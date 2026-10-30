@@ -210,8 +210,8 @@ test.describe("keyboard", () => {
             Panel.get(page).getByRole("switch", { name: "Advertising" }),
             Panel.get(page).getByRole("link", { name: "Privacy policy" }),
             Panel.get(page).getByRole("button", { name: "Reject all" }),
-            Panel.get(page).getByRole("button", { name: "Save choices" }),
             Panel.get(page).getByRole("button", { name: "Accept all" }),
+            Panel.get(page).getByRole("button", { name: "Save choices" }),
         ];
 
         await link.focus();
@@ -330,18 +330,33 @@ test.describe("the panel's switches, links and phone layout", () => {
         await expect(Panel.get(page).getByRole("switch", { name: "Analytics" })).toHaveCSS("appearance", "auto");
     });
 
-    test("in the panel Save choices is filled, and Reject all and Accept all are outlined alike", async ({ page }) => {
+    test("in the panel Save choices is filled, and Reject all and Accept all share the blue outline", async ({ page }) => {
         await page.goto(EuPage);
         await Banner.get(page).getByRole("button", { name: "Choose cookies" }).click();
 
         await expect(Panel.get(page).getByRole("button", { name: "Save choices" })).toHaveCSS("background-color", "rgb(78, 90, 249)");
+        await expect(Panel.get(page).getByRole("button", { name: "Save choices" })).toHaveCSS("color", "rgb(255, 255, 255)");
 
         for (const name of ["Reject all", "Accept all"]) {
             await expect(Panel.get(page).getByRole("button", { name })).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
-            await expect(Panel.get(page).getByRole("button", { name })).toHaveCSS("color", "rgb(32, 31, 36)");
+            await expect(Panel.get(page).getByRole("button", { name })).toHaveCSS("color", "rgb(78, 90, 249)");
             await expect(Panel.get(page).getByRole("button", { name })).toHaveCSS("border-top-width", "1px");
-            await expect(Panel.get(page).getByRole("button", { name })).toHaveCSS("border-top-color", "rgb(201, 201, 202)");
+            await expect(Panel.get(page).getByRole("button", { name })).toHaveCSS("border-top-color", "rgb(122, 131, 251)");
         }
+    });
+
+    test("on a wider screen Reject all and Accept all sit together on the left and Save choices alone on the right", async ({ page }) => {
+        await page.goto(UsPage);
+        await Page.getFooterLink(page).click();
+
+        const footerBox = await Panel.get(page).locator(".footer").boundingBox();
+        const [rejectBox, acceptBox, saveBox] = await Promise.all(["Reject all", "Accept all", "Save choices"].map((name) => Panel.get(page).getByRole("button", { name }).boundingBox()));
+
+        expect(rejectBox.x).toBeCloseTo(footerBox.x + 20, 0);
+        expect(acceptBox.x).toBeCloseTo(rejectBox.x + rejectBox.width + 8, 0);
+        expect(saveBox.x + saveBox.width).toBeCloseTo(footerBox.x + footerBox.width - 20, 0);
+        expect(saveBox.x).toBeGreaterThan(acceptBox.x + acceptBox.width + 8);
+        expect(new Set([rejectBox.y, acceptBox.y, saveBox.y]).size).toBe(1);
     });
 
     test("on a phone the panel's buttons stack in one column, each on one line", async ({ page }) => {
@@ -351,14 +366,15 @@ test.describe("the panel's switches, links and phone layout", () => {
 
         const boxes = [];
 
-        for (const name of ["Reject all", "Save choices", "Accept all"]) boxes.push(await Panel.get(page).getByRole("button", { name }).boundingBox());
+        for (const name of ["Reject all", "Accept all", "Save choices"]) boxes.push(await Panel.get(page).getByRole("button", { name }).boundingBox());
 
-        const [rejectBox, saveBox, acceptBox] = boxes;
+        const [rejectBox, acceptBox, saveBox] = boxes;
 
         expect(new Set(boxes.map((box) => box.x)).size).toBe(1);
+        expect(new Set(boxes.map((box) => box.width)).size).toBe(1);
         expect(boxes.map((box) => box.height)).toEqual([32, 32, 32]);
-        expect(rejectBox.y).toBeLessThan(saveBox.y);
-        expect(saveBox.y).toBeLessThan(acceptBox.y);
+        expect(rejectBox.y).toBeLessThan(acceptBox.y);
+        expect(acceptBox.y).toBeLessThan(saveBox.y);
     });
 
     test("on a small phone the panel keeps its title, Close and its buttons in view and scrolls only the middle", async ({ page }) => {
@@ -369,7 +385,7 @@ test.describe("the panel's switches, links and phone layout", () => {
 
         const controls = [
             Panel.get(page).getByRole("heading", { name: "Your privacy choices" }),
-            ...["Close", "Reject all", "Save choices", "Accept all"].map((name) => Panel.get(page).getByRole("button", { name })),
+            ...["Close", "Reject all", "Accept all", "Save choices"].map((name) => Panel.get(page).getByRole("button", { name })),
         ];
         const areAllInView = async () => {
             const boxes = await Promise.all(controls.map((control) => control.boundingBox()));
