@@ -175,7 +175,7 @@ No site switches to the script before step 5 passes: until then the file carries
 
 A push to master reaches every site that loads the script, so each change goes:
 
-1. Run `pnpm test` and `pnpm test:browser`, and see both pass.
+1. Run `pnpm test` and `pnpm test:browser`, and see both pass. The pull request's Consent tests check runs both again on GitHub.
 2. Merge it into master through a pull request.
 3. Once the GitHub Pages deployment has finished, purge the file from Cloudflare's cache.
 4. On master, pulled up to date, run `pnpm check:live`. It fetches the live file, puts the placeholder back where the Worker placed the region, and compares the result with `v1/consent.js`; it ends with "The live file matches v1/consent.js" only when they are the same.
@@ -186,7 +186,7 @@ Rolling back a bad release: revert the commit, then purge the file from Cloudfla
 
 ```sh
 pnpm install
-pnpm exec playwright install chromium   # once, for the browser tests
+pnpm exec playwright install chromium firefox webkit   # once, for the browser tests
 pnpm test           # the Worker and the script's rules, on Node's own test runner
-pnpm test:browser   # the script on Playwright; every request is routed, so no server runs and nothing reaches the network
+pnpm test:browser   # the script on Playwright, in Chromium, Firefox and WebKit; every request is routed, so no server runs and nothing reaches the network
 ```
